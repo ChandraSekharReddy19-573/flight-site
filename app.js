@@ -1,7 +1,7 @@
 async function checkFlight() {
 
-  const from = document.getElementById("from").value;
-  const to = document.getElementById("to").value;
+  const from = document.getElementById("from").value.toUpperCase();
+  const to = document.getElementById("to").value.toUpperCase();
   const date = document.getElementById("date").value;
 
   if (!from || !to || !date) {
@@ -9,43 +9,40 @@ async function checkFlight() {
     return;
   }
 
-  const result = document.getElementById("result");
-  result.innerHTML = "Checking reality...";
+  const list = document.getElementById("flightList");
+  list.innerHTML = "Loading flights...";
 
-  const lat = 40.64;   // New York JFK
-  const lon = -73.78;
+  const API_KEY = "PASTE_YOUR_API_KEY_HERE";
 
   const url =
-    "https://api.open-meteo.com/v1/forecast?" +
-    "latitude=" + lat +
-    "&longitude=" + lon +
-    "&hourly=precipitation,windspeed_10m" +
-    "&start_date=" + date +
-    "&end_date=" + date;
+    `https://api.aviationstack.com/v1/flights` +
+    `?access_key=${API_KEY}` +
+    `&dep_iata=${from}` +
+    `&arr_iata=${to}`;
 
-  const response = await fetch(url);
-  const data = await response.json();
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
 
-  const rain = data.hourly.precipitation.reduce((a,b)=>a+b,0);
-  const wind = Math.max(...data.hourly.windspeed_10m);
+    list.innerHTML = "";
 
-  let weatherRisk = "Low";
-  if (rain > 5 || wind > 25) weatherRisk = "Medium";
-  if (rain > 15 || wind > 40) weatherRisk = "High";
+    if (!data.data || data.data.length === 0) {
+      list.innerHTML = "<li>No flights found</li>";
+      return;
+    }
 
-  let delayRisk = "Low";
-  const day = new Date(date).getDay(); 
-  if (day === 5) delayRisk = "Medium"; // Friday
-  if (weatherRisk === "High") delayRisk = "High";
+    data.data.slice(0, 10).forEach(flight => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        ✈️ <b>${flight.airline.name}</b><br>
+        Flight: ${flight.flight.iata}<br>
+        Departure: ${flight.departure.scheduled}<br>
+        Status: ${flight.flight_status}
+      `;
+      list.appendChild(li);
+    });
 
-  result.innerHTML = `
-    <h3>Reality Report</h3>
-    <p><b>Route:</b> ${from} → ${to}</p>
-    <p><b>Weather risk:</b> ${weatherRisk}</p>
-    <p><b>Delay chance:</b> ${delayRisk}</p>
-    <p>${delayRisk === "High" ?
-      "This one loves drama. Bring snacks and patience." :
-      "Looks decent. Sky seems calm."}
-    </p>
-  `;
+  } catch (error) {
+    list.innerHTML = "<li>Error loading flights</li>";
+  }
 }
