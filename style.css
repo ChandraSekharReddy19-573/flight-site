@@ -1,0 +1,17 @@
+body {
+  font-family: Arial;
+  background: #f4f6f8;
+  padding: 30px;
+}
+
+input, button {
+  padding: 8px;
+  margin: 5px 0;
+}
+
+#result {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+}
