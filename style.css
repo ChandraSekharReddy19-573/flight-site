@@ -1,17 +1,39 @@
 body {
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: #f4f6f8;
-  padding: 30px;
+  padding: 40px;
+}
+
+h1 {
+  margin-bottom: 5px;
+}
+
+.box {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  width: 300px;
 }
 
 input, button {
+  width: 100%;
   padding: 8px;
-  margin: 5px 0;
+  margin: 6px 0;
 }
 
-#result {
+button {
+  cursor: pointer;
+}
+
+ul {
   margin-top: 20px;
+  padding: 0;
+}
+
+li {
+  list-style: none;
   background: white;
-  padding: 15px;
+  margin-bottom: 10px;
+  padding: 10px;
   border-radius: 6px;
 }
