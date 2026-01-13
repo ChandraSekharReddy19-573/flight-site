@@ -6,18 +6,18 @@
 </head>
 <body>
 
-<h1>Flight Reality Check</h1>
+  <h1>Flight Reality Check</h1>
+  <p>See all available flights for your route</p>
 
-<p>Find out what your flight will really be like.</p>
+  <div class="box">
+    <input id="from" placeholder="From (e.g. JFK)">
+    <input id="to" placeholder="To (e.g. LAX)">
+    <input id="date" type="date">
+    <button onclick="checkFlight()">Show Flights</button>
+  </div>
 
-<input id="from" placeholder="From airport (e.g. JFK)">
-<input id="to" placeholder="To airport (e.g. LAX)">
-<input id="date" type="date">
-<br><br>
-<button onclick="checkFlight()">Check Reality</button>
+  <ul id="flightList"></ul>
 
-<div id="result"></div>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
